@@ -1,7 +1,5 @@
 package cinema;
 
-import cinema.exception.SeatInvalidException;
-import cinema.exception.SeatPurchasedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +24,10 @@ public class SeatController {
     // Endpoint that allows customers to purchase tickets
     @PostMapping("/purchase")
     public ResponseEntity<?> purchaseTickets(@RequestBody Seats seat) {
-        // If the seat is not out of bounds
         if (purchaseTickets.containsValue(seat.toString())) {
-            throw new SeatPurchasedException("The ticket has been already purchased!");
+            return new ResponseEntity<>(Map.of("error", "The ticket has been already purchased!"), HttpStatus.BAD_REQUEST);
         } else if (seat.getColumn() > totalColumns || seat.getColumn() < 1 || seat.getRow() < 1 || seat.getRow() > totalRows) {
-            throw new SeatInvalidException("The number of a row or a column is out of bounds!");
+            return new ResponseEntity<>(Map.of("error", "The number of a row or a column is out of bounds!"), HttpStatus.BAD_REQUEST);
         } else {
             seat.setPrice();
             Token token = new Token(seat);
@@ -39,6 +36,7 @@ public class SeatController {
         }
     }
 
+    // Endpoint that allows customers to return tickets
     @PostMapping("/return")
     public ResponseEntity<?> returnTicket(@RequestBody Map<String, String> tokenMap) {
         String token = tokenMap.get("token");
@@ -58,10 +56,9 @@ public class SeatController {
             return new ResponseEntity<>(Map.of("error", "The password is wrong!"), HttpStatus.UNAUTHORIZED);
         }
 
-
         if (password.equals(adminPassword)) {
             return new ResponseEntity<>(
-                Map.of("current_income", getCurrentIncome(),
+                Map.of( "current_income", getCurrentIncome(),
                         "number_of_purchased_tickets", purchaseTickets.size(),
                         "number_of_available_seats", getNumberOfAvailableSeats()), HttpStatus.OK);
         } else {
