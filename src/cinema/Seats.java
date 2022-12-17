@@ -3,15 +3,12 @@ import java.util.Objects;
 public class Seats {
     private int row;
     private int column;
-    private boolean purchased;
     private int price;
 
-    // Class constructor
     public Seats() {}
     public Seats(int row, int column) {
         this.row = row;
         this.column = column;
-        this.purchased = false;
         setPrice();
     }
 
@@ -68,10 +65,10 @@ public class Seats {
     }
 
     public int getPrice() {
-        // Rows 5 - 9 are $8 and anything closer is $10
         return price;
     }
 
+    // Rows 5 - 9 are $8 and anything closer is $10
     public void setPrice() {
         this.price = row > 4 ? 8 : 10;
     }

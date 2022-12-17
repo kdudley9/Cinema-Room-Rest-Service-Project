@@ -8,8 +8,7 @@ public class Room {
     private int total_columns;
     private List<Seats> available_seats;
 
-    public Room(/*int total_rows, int total_columns*/) {
-        // Rooms have nine rows and nine columns
+    public Room() {
         this.total_rows = 9;
         this.total_columns = 9;
         this.available_seats = new ArrayList<>();
