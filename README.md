@@ -85,7 +85,7 @@ The /stats endpoint handles a POST request. If the request contains the correct 
 }
 ```
 If the password is incorrect, the program responds with a 401 (Unauthorized) status code.
-'''
+```
 {
     "error": "The password is wrong!"
 }
